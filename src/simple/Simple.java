@@ -151,17 +151,17 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
 
     public void move() {
         if (pres[0] == true && pres[2] == true) { //moves the player depending on which set of keys are being pressed
-            px -= (pv * (1 / Math.sqrt(pv)));
-            py -= (pv * (1 / Math.sqrt(pv)));
+            px -= (pv * (1 / Math.sqrt(2)));
+            py -= (pv * (1 / Math.sqrt(2)));
         } else if (pres[1] == true && pres[2] == true) {
-            px -= (pv * (1 / Math.sqrt(pv)));
-            py += (pv * (1 / Math.sqrt(pv)));
+            px -= (pv * (1 / Math.sqrt(2)));
+            py += (pv * (1 / Math.sqrt(2)));
         } else if (pres[0] == true && pres[3] == true) {
-            px += (pv * (1 / Math.sqrt(pv)));
-            py -= (pv * (1 / Math.sqrt(pv)));
+            px += (pv * (1 / Math.sqrt(2)));
+            py -= (pv * (1 / Math.sqrt(2)));
         } else if (pres[1] == true && pres[3] == true) {
-            px += (pv * (1 / Math.sqrt(pv)));
-            py += (pv * (1 / Math.sqrt(pv)));
+            px += (pv * (1 / Math.sqrt(2)));
+            py += (pv * (1 / Math.sqrt(2)));
         } else {
             if (pres[0] == true) {
                 py -= pv;
