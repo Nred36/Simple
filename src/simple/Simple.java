@@ -36,10 +36,10 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
     private Graphics dbg;
     Timer timer;
 
-    int mX, mY, px = 200, py = 300;
+    int mx, my, px = 200, py = 300;
     guys men[] = load1();
 
-    bullets b1;    
+    bullets b1;
 
     public Simple() {//program name
         timer = new Timer(16, this);
@@ -84,9 +84,16 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
     }
 
     public void ter() {
-        double hyp = Math.sqrt((px-mX)^2+(py-mY)^2);
-        double vFactorX = (mX - px) / (hyp);
-        double vFactorY = (mY - py) / (hyp);
+        double hyp;
+
+        if (((mx - px) < 0 && (my - py) > 0) || ((px - mx) < 0 && (py - my) > 0)) {
+            System.out.println((mx - px) + " " + (my - py));
+            hyp = Math.sqrt((mx - px) ^ 2 + (py - my) ^ 2);
+        } else {
+            hyp = Math.sqrt((px - mx) ^ 2 + (py - my) ^ 2);
+        }
+        double vFactorX = (mx - px) / (hyp);
+        double vFactorY = (my - py) / (hyp);
 
         double v = 0.5;
         b1 = new bullets(px, py, (int) (vFactorX * v), (int) (vFactorY * v));
@@ -162,8 +169,8 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
 
     @Override
     public void mousePressed(MouseEvent e) {
-        mX = e.getX();
-        mY = e.getY();        
+        mx = e.getX();
+        my = e.getY();
         ter();
     }
 
