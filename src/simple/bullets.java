@@ -11,17 +11,16 @@ package simple;
  */
 public class bullets {
 
-    private int posx;
-    private int posy;
-    private int terx;
-    private int tery;
+    private double posx;
+    private double posy;
+    private double terx;
+    private double tery;
 
-    public bullets(int x, int y, int tx, int ty) {
+    public bullets(double x, double y, double tx, double ty) {
         posx = x;
         posy = y;
         terx = tx;
         tery = ty;
-        System.out.println(tx+" "+ty);
     }
 
     public void move() {
@@ -29,11 +28,11 @@ public class bullets {
         posy += tery;
     }
 
-    public int getx() {
+    public double getx() {
         return posx;
     }
 
-    public int gety() {
+    public double gety() {
         return posy;
     }
 }

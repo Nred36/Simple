@@ -36,10 +36,11 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
     private Graphics dbg;
     Timer timer;
 
-    int mx, my, px = 200, py = 300;
+    double mx, my, px = 200, py = 300;
     guys men[] = load1();
+    boolean[] pres = new boolean[4];
 
-    bullets b1;
+    bullets[] b = new bullets[25];
 
     public Simple() {//program name
         timer = new Timer(16, this);
@@ -87,16 +88,21 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
         double hyp;
 
         if (((mx - px) < 0 && (my - py) > 0) || ((px - mx) < 0 && (py - my) > 0)) {
-            System.out.println((mx - px) + " " + (my - py));
-            hyp = Math.sqrt((mx - px) ^ 2 + (py - my) ^ 2);
+            hyp = Math.sqrt(Math.pow((mx - px), 2) + Math.pow((py - my), 2));
         } else {
-            hyp = Math.sqrt((px - mx) ^ 2 + (py - my) ^ 2);
+            hyp = Math.sqrt(Math.pow((px - mx), 2) + Math.pow((py - my), 2));
         }
         double vFactorX = (mx - px) / (hyp);
         double vFactorY = (my - py) / (hyp);
 
-        double v = 0.5;
-        b1 = new bullets(px, py, (int) (vFactorX * v), (int) (vFactorY * v));
+        double v = 5;
+        for (int i = 0; i < 25; i++) {
+            if (b[i] == null || b[i].getx() < 0 || b[i].getx() > 2500 || b[i].getx() < 0 || b[i].getx() > 1500) {
+                b[i] = new bullets(px, py, (vFactorX * v), (vFactorY * v));
+                i = 50;
+            }
+
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -105,10 +111,45 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
             myPic.drawRect(men[i].getx(), men[i].gety(), 12, 12);
             men[i].move();
         }
-        if (b1 == null) {
+
+        myPic.fillRect((int) px - 10, (int) py - 10, 20, 20);
+
+        for (int i = 0; i < 25; i++) {
+            if (b[i] == null) {
+            } else {
+                myPic.fillRect((int) b[i].getx(), (int) b[i].gety(), 12, 12);
+                b[i].move();
+            }
+        }
+        move();
+    }
+
+    public void move() {
+        if (pres[0] == true && pres[2] == true) {
+            px -= (2.8);
+            py -= (2.8);
+        } else if (pres[1] == true && pres[2] == true) {
+            px -= (2.8);
+            py += (2.8);
+        } else if (pres[0] == true && pres[3] == true) {
+            px += (2.8);
+            py -= (2.8);
+        } else if (pres[1] == true && pres[3] == true) {
+            px += (2.8);
+            py += (2.8);
         } else {
-            myPic.fillRect(b1.getx(), b1.gety(), 12, 12);
-            b1.move();
+            if (pres[0] == true) {
+                py -= 4;
+            }
+            if (pres[1] == true) {
+                py += 4;
+            }
+            if (pres[2] == true) {
+                px -= 4;
+            }
+            if (pres[3] == true) {
+                px += 4;
+            }
         }
     }
 
@@ -127,6 +168,17 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
     @Override
     public void keyPressed(KeyEvent e) {
         //key presses
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            pres[0] = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            pres[1] = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            pres[2] = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            pres[3] = true;
+        }
+
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             //runs if escape is pressed
             try {
@@ -143,7 +195,16 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            pres[0] = false;
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            pres[1] = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            pres[2] = false;
+        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            pres[3] = false;
+        }
     }
 
     @Override
