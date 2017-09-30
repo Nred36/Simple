@@ -88,7 +88,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
         double vFactorX = (mX - px) / (hyp);
         double vFactorY = (mY - py) / (hyp);
 
-        double v = 2;
+        double v = 0.5;
         b1 = new bullets(px, py, (int) (vFactorX * v), (int) (vFactorY * v));
     }
 
