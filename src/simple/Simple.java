@@ -22,6 +22,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.Timer;
@@ -44,6 +45,9 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
     bullets[] b = new bullets[25]; //array of bullets to be shot
     double bv = 12, pv = 4; //bullet speed and player speed
 
+    int[][][] map = new int[2][10][6];
+    ImageIcon[] img = new ImageIcon[10];
+
     public Simple() {
         timer = new Timer(16, this);
         timer.setInitialDelay(100);
@@ -54,9 +58,27 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
                 //this will run every 2 seconds
             }
         });
+
         try {
-            FileReader fr = new FileReader("save.txt");
+            FileReader fr = new FileReader("map.txt");
             BufferedReader br = new BufferedReader(fr);
+            for (int i = 0; i < 1; i++) {
+                for (int x = 0; x < 5; x++) {
+                    for (int y = 0; y < 5; y++) {
+                        map[i][x][y] = Integer.parseInt(br.readLine());
+                    }
+                }
+            }
+        } catch (IOException a) {
+            System.out.println("Couldn't Load");
+        }
+        try {
+            FileReader fr = new FileReader("images.txt");
+            BufferedReader br = new BufferedReader(fr);
+            for (int i = 0; i < 1; i++) {
+                img[i] = new ImageIcon(br.readLine());
+
+            }
         } catch (IOException a) {
             System.out.println("Couldn't Load");
         }
@@ -121,6 +143,9 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
                 b[i].move(); //moves them
             }
         }
+        for (int i = 0; i < 5; i++) {
+            myPic.drawImage(img[map[0][i][0]].getImage(), map[0][i][1], map[0][i][2], map[0][i][3], map[0][i][4], null);           
+        }
         move();
     }
 
@@ -178,7 +203,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
         } else if (e.getKeyCode() == KeyEvent.VK_D) {
             pres[3] = true;
         }
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        /*if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             try {
                 FileWriter fw = new FileWriter("save.txt");
                 PrintWriter pw = new PrintWriter(fw);
@@ -187,7 +212,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
             } catch (IOException a) {
                 System.out.println("ERROR");
             }
-        }
+        }*/
     }
 
     @Override
