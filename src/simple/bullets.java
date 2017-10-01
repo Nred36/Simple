@@ -5,6 +5,8 @@
  */
 package simple;
 
+import java.awt.Rectangle;
+
 /**
  *
  * @author naree1878
@@ -23,9 +25,18 @@ public class bullets {
         tery = ty;
     }
 
-    public void move() {
-        posx += terx;
-        posy += tery;
+    public void move(Rectangle[] r) {
+        Rectangle b = new Rectangle((int) (posx), (int) (posy), 12 + (int) terx, 12 + (int) tery);
+        for (int i = 0; i < r.length; i++) {
+            if (b.intersects(r[i])) {
+                posx = 12345;
+                posy = 12345;
+            } else {
+                posx += terx;
+                posy += tery;
+            }
+        }
+
     }
 
     public double getx() {

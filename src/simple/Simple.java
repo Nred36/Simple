@@ -8,6 +8,7 @@ package simple;//package name
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -47,6 +48,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
 
     int[][][] map = new int[2][10][6];
     ImageIcon[] img = new ImageIcon[10];
+    Rectangle[] obj = new Rectangle[5];
 
     public Simple() {
         timer = new Timer(16, this);
@@ -87,6 +89,9 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
         addMouseMotionListener(this);
         addMouseListener(this);
 
+        for (int i = 0; i < obj.length; i++) {
+            obj[i] = new Rectangle(map[0][i][1], map[0][i][2], map[0][i][3], map[0][i][4]);
+        }
     }
 
     public static void main(String[] args) {
@@ -140,42 +145,52 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
             if (b[i] == null) {
             } else {
                 myPic.fillRect((int) b[i].getx(), (int) b[i].gety(), 12, 12); //draws the bullets
-                b[i].move(); //moves them
+                b[i].move(obj); //moves them
             }
         }
         for (int i = 0; i < 5; i++) {
-            myPic.drawImage(img[map[0][i][0]].getImage(), map[0][i][1], map[0][i][2], map[0][i][3], map[0][i][4], null);           
+            myPic.drawImage(img[map[0][i][0]].getImage(), map[0][i][1], map[0][i][2], map[0][i][3], map[0][i][4], null);
         }
         move();
     }
 
     public void move() {
-        if (pres[0] == true && pres[2] == true) { //moves the player depending on which set of keys are being pressed
+        if (pres[0] == true && pres[2] == true && inter(-pv, -pv)) { //moves the player depending on which set of keys are being pressed
             px -= (pv * (1 / Math.sqrt(2)));
             py -= (pv * (1 / Math.sqrt(2)));
-        } else if (pres[1] == true && pres[2] == true) {
+        } else if (pres[1] == true && pres[2] == true && inter(-pv, pv)) {
             px -= (pv * (1 / Math.sqrt(2)));
             py += (pv * (1 / Math.sqrt(2)));
-        } else if (pres[0] == true && pres[3] == true) {
+        } else if (pres[0] == true && pres[3] == true && inter(pv, -pv)) {
             px += (pv * (1 / Math.sqrt(2)));
             py -= (pv * (1 / Math.sqrt(2)));
-        } else if (pres[1] == true && pres[3] == true) {
+        } else if (pres[1] == true && pres[3] == true && inter(pv, pv)) {
             px += (pv * (1 / Math.sqrt(2)));
             py += (pv * (1 / Math.sqrt(2)));
         } else {
-            if (pres[0] == true) {
+            if (pres[0] == true && inter(0, -pv)) {
                 py -= pv;
             }
-            if (pres[1] == true) {
+            if (pres[1] == true && inter(0, pv)) {
                 py += pv;
             }
-            if (pres[2] == true) {
+            if (pres[2] == true && inter(-pv, 0)) {
                 px -= pv;
             }
-            if (pres[3] == true) {
+            if (pres[3] == true && inter(pv, 0)) {
                 px += pv;
             }
         }
+    }
+
+    public boolean inter(double x, double y) {
+        Rectangle r = new Rectangle((int) (px - 10 + x), (int) (py - 10 + y), 20, 20);
+        for (int i = 0; i < obj.length; i++) {
+            if (r.intersects(obj[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
