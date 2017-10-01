@@ -63,7 +63,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
 
         try {
             FileReader fr = new FileReader("map.txt");
-            BufferedReader br = new BufferedReader(fr);
+            BufferedReader br = new BufferedReader(fr); //reads map from text file
             for (int i = 0; i < 1; i++) {
                 for (int x = 0; x < 5; x++) {
                     for (int y = 0; y < 5; y++) {
@@ -155,7 +155,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
     }
 
     public void move() {
-        if (pres[0] == true && pres[2] == true && inter(-pv, -pv)) { //moves the player depending on which set of keys are being pressed
+        if (pres[0] == true && pres[2] == true && inter(-pv, -pv)) { //moves the player depending on which set of keys are being pressed, making sure nothing is in the way
             px -= (pv * (1 / Math.sqrt(2)));
             py -= (pv * (1 / Math.sqrt(2)));
         } else if (pres[1] == true && pres[2] == true && inter(-pv, pv)) {
@@ -184,7 +184,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
     }
 
     public boolean inter(double x, double y) {
-        Rectangle r = new Rectangle((int) (px - 10 + x), (int) (py - 10 + y), 20, 20);
+        Rectangle r = new Rectangle((int) (px - 10 + x), (int) (py - 10 + y), 20, 20); //checks for and intersection
         for (int i = 0; i < obj.length; i++) {
             if (r.intersects(obj[i])) {
                 return false;
