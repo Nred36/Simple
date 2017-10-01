@@ -26,7 +26,7 @@ public class bullets {
     }
 
     public void move(Rectangle[] r) {
-        Rectangle b = new Rectangle((int) (posx), (int) (posy), 12 + (int) terx, 12 + (int) tery);
+        Rectangle b = new Rectangle((int) (posx), (int) (posy), 24 + (int) terx, 24 + (int) tery);
         for (int i = 0; i < r.length; i++) {
             if (b.intersects(r[i])) {
                 posx = 12345;
