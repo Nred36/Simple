@@ -51,7 +51,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
     Rectangle[] obj = new Rectangle[5];
 
     public Simple() {
-        timer = new Timer(16, this);
+        timer = new Timer(160, this);
         timer.setInitialDelay(100);
         timer.start();
         Timer timer = new Timer(2000, new ActionListener() {
@@ -145,6 +145,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
             if (b[i] == null) {
             } else {
                 myPic.fillRect((int) b[i].getx(), (int) b[i].gety(), 12, 12); //draws the bullets
+                myPic.drawLine((int) b[i].getx()+6, (int) b[i].gety()+6, (int) (b[i].getx() + b[i].gettx())+6, (int) (b[i].gety() + b[i].getty())+6);
                 b[i].move(obj); //moves them
             }
         }
@@ -152,6 +153,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
             myPic.drawImage(img[map[0][i][0]].getImage(), map[0][i][1], map[0][i][2], map[0][i][3], map[0][i][4], null);
         }
         move();
+
     }
 
     public void move() {
@@ -219,15 +221,15 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
             pres[3] = true;
         }
         /*if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            try {
-                FileWriter fw = new FileWriter("save.txt");
-                PrintWriter pw = new PrintWriter(fw);
-                System.out.println("Saved");
-                pw.close();
-            } catch (IOException a) {
-                System.out.println("ERROR");
-            }
-        }*/
+         try {
+         FileWriter fw = new FileWriter("save.txt");
+         PrintWriter pw = new PrintWriter(fw);
+         System.out.println("Saved");
+         pw.close();
+         } catch (IOException a) {
+         System.out.println("ERROR");
+         }
+         }*/
     }
 
     @Override
