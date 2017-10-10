@@ -5,6 +5,8 @@
  */
 package simple;
 
+import java.awt.Rectangle;
+
 /**
  *
  * @author naree1878
@@ -12,8 +14,8 @@ package simple;
 public class guys {
 
     private int hp;
-    private int posx;
-    private int posy;
+    private double posx;
+    private double posy;
     private double damage;
 
     public guys(int x, int y, int lvl) {
@@ -22,18 +24,29 @@ public class guys {
         hp = lvl * 3;
         damage = lvl * 1.5;
     }
-    public int getx(){
+
+    public double getx() {
         return posx;
     }
-    public int gety(){
+
+    public double gety() {
         return posy;
     }
-    public void move(){
-        posx+=1;
-        posy-=1;
+
+    public void move(Rectangle[] obj) {
+        Rectangle g = new Rectangle((int) posx + 6, (int) posy + 6, 12, 12);
+        for (int i = 0; i < obj.length; i++) {
+            if (g.intersects(obj[i])) {
+                System.out.println("dd");
+            } else {
+                posx += 0.5;
+                System.out.println("ee");
+            }
+        }
     }
-    public void shoot(){
-        
+
+    public void shoot() {
+
     }
-          
+
 }

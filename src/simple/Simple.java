@@ -39,7 +39,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
     Timer timer;
 
     double mx, my; //mouse positions
-    double px = 200, py = 300; //sets player positon
+    static double px = 600, py = 400; //sets player positon
     guys men[] = load1(); //gets the emeny list for level one
     boolean[] pres = new boolean[4]; //buttons being pressed
 
@@ -48,10 +48,10 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
 
     int[][][] map = new int[2][10][6];
     ImageIcon[] img = new ImageIcon[10];
-    Rectangle[] obj = new Rectangle[5];
+    static Rectangle[] obj = new Rectangle[5];
 
     public Simple() {
-        timer = new Timer(160, this);
+        timer = new Timer(16, this);
         timer.setInitialDelay(100);
         timer.start();
         Timer timer = new Timer(2000, new ActionListener() {
@@ -135,8 +135,8 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
     public void paintComponent(Graphics g) {
         myPic = (Graphics2D) g;
         for (int i = 0; i < 4; i++) {
-            myPic.drawRect(men[i].getx(), men[i].gety(), 12, 12); //draws the enemys
-            men[i].move(); //moves them
+            myPic.drawRect((int) men[i].getx(), (int) men[i].gety(), 12, 12); //draws the enemys
+            men[i].move(obj); //moves them
         }
 
         myPic.fillRect((int) px - 10, (int) py - 10, 20, 20); //draws the player
@@ -145,7 +145,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
             if (b[i] == null) {
             } else {
                 myPic.fillRect((int) b[i].getx(), (int) b[i].gety(), 12, 12); //draws the bullets
-                myPic.drawLine((int) b[i].getx()+6, (int) b[i].gety()+6, (int) (b[i].getx() + b[i].gettx())+6, (int) (b[i].gety() + b[i].getty())+6);
+                //myPic.drawLine((int) b[i].getx() + 6, (int) b[i].gety() + 6, (int) (b[i].getx() + b[i].gettx() + b[i].gettx() + b[i].gettx()) + 6, (int) (b[i].gety() + b[i].getty() + b[i].getty() + b[i].getty()) + 6);
                 b[i].move(obj); //moves them
             }
         }
