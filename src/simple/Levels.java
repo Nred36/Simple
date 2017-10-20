@@ -16,7 +16,7 @@ public class Levels {
         i[0] = new guys(12, 345, 1);
         i[1] = new guys(123, 35, 1);
         i[2] = new guys(312, 645, 2);
-        i[3] = new guys(512, 575, 1);
+        i[3] = new guys(50, 575, 1);
         return (i);
     }
 

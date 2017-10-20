@@ -31,25 +31,26 @@ import javax.swing.Timer;
 import static simple.Levels.load1;
 
 public class Simple extends JApplet implements ActionListener, KeyListener, MouseMotionListener, MouseWheelListener, MouseListener {
-
+    
     static JFrame f = new JFrame("");
     Graphics2D myPic;
     Image dbImage, master;
     private Graphics dbg;
     Timer timer;
-
+    
     double mx, my; //mouse positions
     static double px = 600, py = 400; //sets player positon
-    guys men[] = load1(); //gets the emeny list for level one
+    guys men[] = load1(); //gets the emeny list for the level
+    Bullet[] eb = new Bullet[men.length]; //array of bullets tbe shoto be shot
     boolean[] pres = new boolean[4]; //buttons being pressed
 
-    bullets[] b = new bullets[25]; //array of bullets to be shot
-    double bv = 12, pv = 4; //bullet speed and player speed
+    Bullet[] b = new Bullet[25]; //array of bullets to be shot
+    static double pv = 4; //bullet speed and player speed
 
     int[][][] map = new int[2][10][6];
     ImageIcon[] img = new ImageIcon[10];
     static Rectangle[] obj = new Rectangle[5];
-
+    
     public Simple() {
         timer = new Timer(16, this);
         timer.setInitialDelay(100);
@@ -60,7 +61,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
                 //this will run every 2 seconds
             }
         });
-
+        
         try {
             FileReader fr = new FileReader("map.txt");
             BufferedReader br = new BufferedReader(fr); //reads map from text file
@@ -79,7 +80,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
             BufferedReader br = new BufferedReader(fr);
             for (int i = 0; i < 1; i++) {
                 img[i] = new ImageIcon(br.readLine());
-
+                
             }
         } catch (IOException a) {
             System.out.println("Couldn't Load");
@@ -88,12 +89,12 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
         addMouseWheelListener(this);
         addMouseMotionListener(this);
         addMouseListener(this);
-
+        
         for (int i = 0; i < obj.length; i++) {
             obj[i] = new Rectangle(map[0][i][1], map[0][i][2], map[0][i][3], map[0][i][4]);
         }
     }
-
+    
     public static void main(String[] args) {
         JApplet applet = new Simple();
         f.getContentPane().add("Center", applet);
@@ -104,41 +105,29 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
         f.setBounds(10, 10, 1300, 700);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
+    
     public void paint(Graphics g) {
         dbImage = createImage(getWidth(), getHeight());
         dbg = dbImage.getGraphics();
         paintComponent(dbg);
         g.drawImage(dbImage, 0, 0, this);
     }
-
-    public void ter() {
-        double hyp;
-
-        if (((mx - px) < 0 && (my - py) > 0) || ((px - mx) < 0 && (py - my) > 0)) {
-            hyp = Math.sqrt(Math.pow((mx - px), 2) + Math.pow((py - my), 2)); //gets the hypotenuse if its in top right or bottom left
-        } else {
-            hyp = Math.sqrt(Math.pow((px - mx), 2) + Math.pow((py - my), 2));
-        }
-        double vFactorX = (mx - px) / (hyp); //gets the basic amount the bullet needs to move
-        double vFactorY = (my - py) / (hyp);
-
-        for (int i = 0; i < 25; i++) {
-            if (b[i] == null || b[i].getx() < 0 || b[i].getx() > 2500 || b[i].getx() < 0 || b[i].getx() > 1500) { //find the first unused bullet and starts it moving
-                b[i] = new bullets(px, py, (vFactorX * bv), (vFactorY * bv)); //YOU SHOULD ADD RELATIVE BULLET SPEED
-                i = 50;
-            }
-
-        }
-    }
-
+    
     public void paintComponent(Graphics g) {
         myPic = (Graphics2D) g;
         for (int i = 0; i < 4; i++) {
             myPic.drawRect((int) men[i].getx(), (int) men[i].gety(), 12, 12); //draws the enemys
             men[i].move(obj); //moves them
+            if (Math.ceil(Math.random() * 5) == 1) {
+                eb[i] = men[i].shoot();               
+                eb[i].move(obj);
+            }
+            if (eb[i] == null) {
+            } else {
+                myPic.fillRect((int) eb[i].getx(), (int) eb[i].gety(), 12, 12);
+            }
         }
-
+        
         myPic.fillRect((int) px - 10, (int) py - 10, 20, 20); //draws the player
 
         for (int i = 0; i < 25; i++) {
@@ -153,9 +142,9 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
             myPic.drawImage(img[map[0][i][0]].getImage(), map[0][i][1], map[0][i][2], map[0][i][3], map[0][i][4], null);
         }
         move();
-
+        
     }
-
+    
     public void move() {
         if (pres[0] == true && pres[2] == true && inter(-pv, -pv)) { //moves the player depending on which set of keys are being pressed, making sure nothing is in the way
             px -= (pv * (1 / Math.sqrt(2)));
@@ -184,7 +173,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
             }
         }
     }
-
+    
     public boolean inter(double x, double y) {
         Rectangle r = new Rectangle((int) (px - 10 + x), (int) (py - 10 + y), 20, 20); //checks for and intersection
         for (int i = 0; i < obj.length; i++) {
@@ -194,19 +183,19 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
         }
         return true;
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         repaint();
         requestFocus();
         setFocusTraversalKeysEnabled(false);
     }
-
+    
     @Override
     public void keyTyped(KeyEvent e) {
         //
     }
-
+    
     @Override
     public void keyPressed(KeyEvent e) {
         //key presses
@@ -231,7 +220,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
          }
          }*/
     }
-
+    
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_W) {
@@ -245,7 +234,7 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
             pres[3] = false;
         }
     }
-
+    
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         /* if (zoom < 3 && e.getPreciseWheelRotation() < 0) {
@@ -254,36 +243,41 @@ public class Simple extends JApplet implements ActionListener, KeyListener, Mous
          zoom--;
          }*/
     }
-
+    
     @Override
     public void mouseDragged(MouseEvent e) {
     }
-
+    
     @Override
     public void mouseMoved(MouseEvent e) {
     }
-
+    
     @Override
     public void mouseClicked(MouseEvent e) {
     }
-
+    
     @Override
     public void mousePressed(MouseEvent e) {
         mx = e.getX();
         my = e.getY(); //sets the mouses position
-        ter(); //spawns the bullets
+        for (int i = 0; i < 25; i++) {
+            if (b[i] == null || b[i].getx() < 0 || b[i].getx() > 2500 || b[i].getx() < 0 || b[i].getx() > 1500) {
+                b[i] = new Bullet(px, py, mx, my);
+                i = 50;
+            }
+        }
     }
-
+    
     @Override
     public void mouseReleased(MouseEvent e) {
     }
-
+    
     @Override
     public void mouseEntered(MouseEvent e) {
     }
-
+    
     @Override
     public void mouseExited(MouseEvent e) {
     }
-
+    
 }

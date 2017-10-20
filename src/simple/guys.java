@@ -34,19 +34,37 @@ public class guys {
     }
 
     public void move(Rectangle[] obj) {
-        Rectangle g = new Rectangle((int) posx + 6, (int) posy + 6, 12, 12);
-        for (int i = 0; i < obj.length; i++) {
+        Rectangle g;
+        for (int i = 0; i < 4; i++) {
+            g = new Rectangle((int) (posx + 7), (int) posy, 12, 12);
             if (g.intersects(obj[i])) {
-                System.out.println("dd");
-            } else {
-                posx += 0.5;
-                System.out.println("ee");
+                break;
+            } else if (Simple.px > posx) {
+                posx += .5;
+            }
+            g = new Rectangle((int) (posx + 5), (int) posy + 6, 12, 12);
+            if (g.intersects(obj[i])) {
+                break;
+            } else if (Simple.px < posx) {
+                posx -= .5;
+            }
+            g = new Rectangle((int) (posx + 6), (int) posy + 7, 12, 12);
+            if (g.intersects(obj[i])) {
+                break;
+            } else if (Simple.py > posy) {
+                posy += .5;
+            }
+            g = new Rectangle((int) (posx + 6), (int) posy + 5, 12, 12);
+            if (g.intersects(obj[i])) {
+                break;
+            } else if (Simple.py < posy) {
+                posy -= .5;
             }
         }
     }
 
-    public void shoot() {
-
+    public Bullet shoot() {
+        Bullet b = new Bullet(posx, posx, Simple.px, Simple.py);
+        return b;
     }
-
 }

@@ -12,18 +12,20 @@ import java.awt.geom.Line2D;
  *
  * @author naree1878
  */
-public class bullets {
+public class Bullet {
 
     private double posx;
     private double posy;
-    private double terx;
-    private double tery;
+    private double terx = 0;
+    private double tery = 0;
+    private double bv = 12;
 
-    public bullets(double x, double y, double tx, double ty) {
+    public Bullet(double x, double y, double tx, double ty) {
         posx = x;
         posy = y;
-        terx = tx;
-        tery = ty;
+        //if (terx != 0 && tery != 0) {
+        ter(tx, ty);
+        //}
     }
 
     public void move(Rectangle[] r) {
@@ -54,5 +56,23 @@ public class bullets {
 
     public double getty() {
         return tery;
+    }
+
+    public void setv(double v) {
+        bv = v;
+    }
+
+    public void ter(double mx, double my) {
+        double hyp;
+
+        if (((mx - posx) < 0 && (my - posy) > 0) || ((posx - mx) < 0 && (posy - my) > 0)) {
+            hyp = Math.sqrt(Math.pow((mx - posx), 2) + Math.pow((posy - my), 2)); //gets the hypotenuse if its in top right or bottom left
+        } else {
+            hyp = Math.sqrt(Math.pow((posx - mx), 2) + Math.pow((posy - my), 2));
+        }
+        double vFactorX = (mx - posx) / (hyp); //gets the basic amount the bullet needs to move
+        double vFactorY = (my - posy) / (hyp);
+        terx = vFactorX * bv;
+        tery = vFactorY * bv;
     }
 }
